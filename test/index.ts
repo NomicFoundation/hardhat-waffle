@@ -98,6 +98,8 @@ describe("Waffle plugin plugin", function () {
 
     it("Should load the Waffle chai matchers", async function () {
       await this.env.run("test");
+      // Mocha's exit code is the number of failed tests (up to 255).
+      // We expect one failed test ("Should fail", throwing on purpose).
       assert.equal(process.exitCode, 1);
       process.exitCode = 0;
     });

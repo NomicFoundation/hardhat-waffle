@@ -2,7 +2,7 @@
 
 # Will append a "-dev.commithash" suffix to version,
 # and change NPM release channel to "dev".
-# Used to auto-publish dev version from main branch .
+# Used to auto-publish dev version from main branch.
 
 set -e
 DEV=$(jq -r ".version" package.json | awk -F "-" '{print $1}')-dev.$(git rev-parse --short HEAD)

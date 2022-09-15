@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - rzadp/release-dev
 jobs:
   test:
     runs-on: ubuntu-latest

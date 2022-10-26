@@ -1,0 +1,22 @@
+name: Dev Release
+on:
+  push:
+    branches:
+      - master
+jobs:
+  dev-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - run: npm i -g yarn@1.22.17
+      - run: yarn --frozen-lockfile
+      - run: yarn build
+      - name: Publish dev version to npm
+        run: |
+          set -e
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN_DEV }}" > .npmrc
+          ./scripts/dev-version.sh

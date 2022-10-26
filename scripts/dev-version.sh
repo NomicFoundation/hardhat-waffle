@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Will append a "-dev.commithash" suffix to version,
+# change the package name and auto-publish dev version from main branch to NPM
+
 set -e
 
 # Extract the version and append -dev.<commit_hash> to it - format like `1.2.0-dev.9fd2c7c`

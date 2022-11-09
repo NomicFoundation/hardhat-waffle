@@ -126,4 +126,57 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
       expect("0xdeadbeaf").not.to.hexEqual("0x12ab");
     });
   });
+
+  describe('Specific behaviour', () => {
+    it('should skip gas cost check', async () => {
+      let estimateGasCalled = false;
+      const originalProcess = waffle
+        .provider
+        ._hardhatNetwork
+        .provider
+        ._wrapped
+        ._wrapped
+        ._wrapped
+        ._ethModule
+        .processRequest
+      .bind(
+        waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule,
+      )
+      ;waffle
+        .provider
+        ._hardhatNetwork
+        .provider
+        ._wrapped
+        ._wrapped
+        ._wrapped
+        ._ethModule
+        .processRequest
+      = (method, params) => {
+        if (method === 'eth_estimateGas') {
+          estimateGasCalled = true;
+        }
+        return originalProcess(method, params)
+      }
+  
+      processRequest = waffle
+        .provider
+        ._hardhatNetwork
+        .provider
+        ._wrapped
+        ._wrapped
+        ._wrapped
+        ._ethModule
+        .processRequest
+
+      const Contract = await ethers.getContractFactory("Contract");
+      const contract = await Contract.deploy();
+
+      await contract.deployed();
+
+      const tx = await contract.inc(7);
+      await tx.wait();
+
+      expect(estimateGasCalled, 'Estimate gas was called').to.be.false;
+    })
+  });
 });

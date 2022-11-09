@@ -8,6 +8,7 @@ import { getDeployMockContract, hardhatDeployContract } from "./deploy";
 import { getLinkFunction } from "./link";
 import { initializeWaffleMatchers } from "./matchers";
 import "./type-extensions";
+import { getHardhatVMEventEmitter, skipGasCostCheck } from "./skip-gas-cost-check";
 
 extendEnvironment((hre) => {
   // We can't actually implement a MockProvider because of its private
@@ -32,6 +33,27 @@ extendEnvironment((hre) => {
         overrideSigners,
         overrideProvider ?? hardhatWaffleProvider
       );
+    };
+
+    const init = hardhatWaffleProvider
+      ._hardhatNetwork
+      .provider
+      ._wrapped
+      ._wrapped
+      ._wrapped
+      ._init;
+    hardhatWaffleProvider
+      ._hardhatNetwork
+      .provider
+      ._wrapped
+      ._wrapped
+      ._wrapped
+      ._init
+    = async function () {
+      await init.apply(this);
+      if (getHardhatVMEventEmitter(hardhatWaffleProvider)?.listenerCount('beforeMessage') < 2) {
+        skipGasCostCheck(hardhatWaffleProvider);
+      }
     }
 
     return {

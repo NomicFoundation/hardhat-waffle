@@ -7,7 +7,7 @@ export function initializeWaffleMatchers(projectRoot: string) {
     });
 
     const chai = require(chaiPath);
-    const { waffleChai } = require("./waffle-chai");
+    const { waffleChai } = require("@ethereum-waffle/chai");
 
     chai.use(waffleChai);
   } catch {

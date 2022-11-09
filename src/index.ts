@@ -20,7 +20,8 @@ extendEnvironment((hre) => {
     ) as any;
 
     const { waffleChai } = require("@ethereum-waffle/chai");
-    const { createFixtureLoader } = require("@ethereum-waffle/provider")
+    // TODO: next line requires @ethereum-waffle/provider - do we want it to be this way?
+    const { createFixtureLoader } = require("@ethereum-waffle/provider");
 
     const hardhatCreateFixtureLoader = (
       hardhatWaffleProvider: MockProvider,

@@ -1,6 +1,6 @@
 let processRequest: any;
 
-export function skipGasCostCheck(hardhatWaffleProvider: any) {
+export function skipEstimateGas(hardhatWaffleProvider: any) {
   const init =
     hardhatWaffleProvider._hardhatNetwork.provider._wrapped._wrapped._wrapped
       ._init;

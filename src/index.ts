@@ -8,7 +8,7 @@ import { getDeployMockContract, hardhatDeployContract } from "./deploy";
 import { getLinkFunction } from "./link";
 import { initializeWaffleMatchers } from "./matchers";
 import "./type-extensions";
-import { skipGasCostCheck } from "./skip-gas-cost-check";
+import { skipEstimateGas } from "./skip-estimate-gas";
 
 declare module "hardhat/types" {
   export interface HardhatUserConfig {
@@ -25,14 +25,14 @@ declare module "hardhat/types" {
        *
        * @default false
        */
-      skipGasCostCheck?: boolean;
+      skipEstimateGas?: boolean;
     };
   }
 
   export interface HardhatConfig {
     waffle?: {
       injectCallHistory?: boolean;
-      skipGasCostCheck?: boolean;
+      skipEstimateGas?: boolean;
     };
   }
 }
@@ -61,8 +61,8 @@ extendEnvironment((hre) => {
       return createFixtureLoader(overrideSigners, overrideProvider ?? provider);
     };
 
-    if (hre.config.waffle?.skipGasCostCheck === true) {
-      skipGasCostCheck(hardhatWaffleProvider);
+    if (hre.config.waffle?.skipEstimateGas === true) {
+      skipEstimateGas(hardhatWaffleProvider);
     }
 
     return {

@@ -127,46 +127,25 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
     });
   });
 
-  describe('Specific behaviour', () => {
-    it('should skip gas cost check', async () => {
+  describe("Specific behaviour", () => {
+    it("should skip gas cost check", async () => {
       let estimateGasCalled = false;
-      const originalProcess = waffle
-        .provider
-        ._hardhatNetwork
-        .provider
-        ._wrapped
-        ._wrapped
-        ._wrapped
-        ._ethModule
-        .processRequest
-      .bind(
-        waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule,
-      )
-      ;waffle
-        .provider
-        ._hardhatNetwork
-        .provider
-        ._wrapped
-        ._wrapped
-        ._wrapped
-        ._ethModule
-        .processRequest
-      = (method, params) => {
-        if (method === 'eth_estimateGas') {
-          estimateGasCalled = true;
-        }
-        return originalProcess(method, params)
-      }
-  
-      processRequest = waffle
-        .provider
-        ._hardhatNetwork
-        .provider
-        ._wrapped
-        ._wrapped
-        ._wrapped
-        ._ethModule
-        .processRequest
+      const originalProcess =
+        waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule.processRequest.bind(
+          waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped
+            ._ethModule
+        );
+      waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule.processRequest =
+        (method, params) => {
+          if (method === "eth_estimateGas") {
+            estimateGasCalled = true;
+          }
+          return originalProcess(method, params);
+        };
+
+      processRequest =
+        waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped
+          ._ethModule.processRequest;
 
       const Contract = await ethers.getContractFactory("Contract");
       const contract = await Contract.deploy();
@@ -176,7 +155,7 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
       const tx = await contract.inc(7);
       await tx.wait();
 
-      expect(estimateGasCalled, 'Estimate gas was called').to.be.false;
-    })
+      expect(estimateGasCalled, "Estimate gas was called").to.be.false;
+    });
   });
 });

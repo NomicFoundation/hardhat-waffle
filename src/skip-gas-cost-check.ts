@@ -1,6 +1,23 @@
 let processRequest: any;
 
-export function skipGasCostCheck(provider: any) {
+export function skipGasCostCheck(hardhatWaffleProvider: any) {
+  const init =
+      hardhatWaffleProvider._hardhatNetwork.provider._wrapped._wrapped._wrapped
+        ._init;
+  hardhatWaffleProvider._hardhatNetwork.provider._wrapped._wrapped._wrapped._init =
+    async function () {
+      await init.apply(this);
+      if (
+        getHardhatVMEventEmitter(hardhatWaffleProvider)?.listenerCount(
+          "beforeMessage"
+        ) < 2
+      ) {
+        overrideProcessRequesr(hardhatWaffleProvider);
+      }
+    };
+}
+
+function overrideProcessRequesr(provider: any) {
   const curProcessRequest =
     provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule
       .processRequest;
@@ -25,7 +42,7 @@ export function skipGasCostCheck(provider: any) {
   }
 }
 
-export function getHardhatVMEventEmitter(provider: any) {
+function getHardhatVMEventEmitter(provider: any) {
   const vm =
     provider?._hardhatNetwork.provider?._wrapped._wrapped?._wrapped?._node
       ?._vmTracer?._vm;

@@ -9,9 +9,35 @@ import { getLinkFunction } from "./link";
 import { initializeWaffleMatchers } from "./matchers";
 import "./type-extensions";
 import {
-  getHardhatVMEventEmitter,
   skipGasCostCheck,
 } from "./skip-gas-cost-check";
+
+declare module "hardhat/types" {
+  export interface HardhatUserConfig {
+    waffle?: {
+      /**
+       * If true, the call history will be injected into the Hardhat Runtime Environment.
+       * This will allow you to use matchers `calledOnContract` and `calledOnContractWith`.
+       *
+       * @default false
+       */
+      injectCallHistory?: boolean;
+      /**
+       * If true, the estimate gas step will be skipped when executing a transaction.
+       *
+       * @default false
+       */
+       skipGasCostCheck?: boolean;
+    };
+  }
+
+  export interface HardhatConfig {
+    waffle?: {
+      injectCallHistory?: boolean;
+      skipGasCostCheck?: boolean;
+    };
+  }
+}
 
 extendEnvironment((hre) => {
   // We can't actually implement a MockProvider because of its private
@@ -37,20 +63,9 @@ extendEnvironment((hre) => {
       return createFixtureLoader(overrideSigners, overrideProvider ?? provider);
     };
 
-    const init =
-      hardhatWaffleProvider._hardhatNetwork.provider._wrapped._wrapped._wrapped
-        ._init;
-    hardhatWaffleProvider._hardhatNetwork.provider._wrapped._wrapped._wrapped._init =
-      async function () {
-        await init.apply(this);
-        if (
-          getHardhatVMEventEmitter(hardhatWaffleProvider)?.listenerCount(
-            "beforeMessage"
-          ) < 2
-        ) {
-          skipGasCostCheck(hardhatWaffleProvider);
-        }
-      };
+    if (hre.config.waffle?.skipGasCostCheck === true) {
+      skipGasCostCheck(hardhatWaffleProvider);
+    }
 
     return {
       provider: hardhatWaffleProvider,

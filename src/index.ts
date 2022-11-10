@@ -8,9 +8,7 @@ import { getDeployMockContract, hardhatDeployContract } from "./deploy";
 import { getLinkFunction } from "./link";
 import { initializeWaffleMatchers } from "./matchers";
 import "./type-extensions";
-import {
-  skipGasCostCheck,
-} from "./skip-gas-cost-check";
+import { skipGasCostCheck } from "./skip-gas-cost-check";
 
 declare module "hardhat/types" {
   export interface HardhatUserConfig {
@@ -27,7 +25,7 @@ declare module "hardhat/types" {
        *
        * @default false
        */
-       skipGasCostCheck?: boolean;
+      skipGasCostCheck?: boolean;
     };
   }
 

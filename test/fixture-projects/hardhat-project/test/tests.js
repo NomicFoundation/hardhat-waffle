@@ -12,6 +12,48 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
     throw new Error("Failed on purpose");
   });
 
+  describe("Unsupported methods", function () {
+    it("Should print the right error for calledOnContractWith", async function () {
+      const Contract = await ethers.getContractFactory("Contract");
+      const contract = await Contract.deploy();
+
+      await contract.deployed();
+
+      const tx = await contract.inc(7);
+      await tx.wait();
+
+      try {
+        expect("inc").to.be.calledOnContractWith(contract, [7]);
+      } catch (error) {
+        if (error.message.includes("calledOnContract matcher")) {
+          return;
+        }
+      }
+
+      throw Error("Should have failed");
+    });
+
+    it("Should print the right error for calledOnContract", async function () {
+      const Contract = await ethers.getContractFactory("Contract");
+      const contract = await Contract.deploy();
+
+      await contract.deployed();
+
+      const tx = await contract.inc(7);
+      await tx.wait();
+
+      try {
+        expect("inc").to.be.calledOnContractWith(contract);
+      } catch (error) {
+        if (error.message.includes("calledOnContract matcher")) {
+          return;
+        }
+      }
+
+      throw Error("Should have failed");
+    });
+  });
+
   describe("waffle chai matchers", function () {
     it("should support bignumber matchers", async function () {
       expect(ethers.BigNumber.from(993)).to.equal(993);

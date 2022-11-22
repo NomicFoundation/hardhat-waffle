@@ -3,4 +3,3 @@ const { shouldSkipGasCostEstimation } = require('../../shared-tests/skip-estimat
 
 shouldSupportCalledOnContractMatchers();
 shouldSkipGasCostEstimation();
-

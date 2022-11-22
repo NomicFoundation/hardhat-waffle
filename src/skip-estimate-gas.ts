@@ -12,12 +12,12 @@ export function skipEstimateGas(hardhatWaffleProvider: any) {
           "beforeMessage"
         ) < 2
       ) {
-        overrideProcessRequesr(hardhatWaffleProvider);
+        overrideProcessRequest(hardhatWaffleProvider);
       }
     };
 }
 
-function overrideProcessRequesr(provider: any) {
+function overrideProcessRequest(provider: any) {
   const curProcessRequest =
     provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule
       .processRequest;

@@ -9,6 +9,7 @@ import { getLinkFunction } from "./link";
 import { initializeWaffleMatchers } from "./matchers";
 import "./type-extensions";
 import { skipEstimateGas } from "./skip-estimate-gas";
+import { injectCallHistory } from "./inject-call-history";
 
 declare module "hardhat/types" {
   export interface HardhatUserConfig {
@@ -63,6 +64,10 @@ extendEnvironment((hre) => {
 
     if (hre.config.waffle?.skipEstimateGas === true) {
       skipEstimateGas(hardhatWaffleProvider);
+    }
+
+    if (hre.config.waffle?.injectCallHistory === true) {
+      injectCallHistory(hardhatWaffleProvider);
     }
 
     return {

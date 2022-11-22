@@ -58,7 +58,7 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
       ).to.changeEtherBalance(sender, -200);
     });
 
-    it.skip("should support the changeEtherBalance matcher with fee enabled", async function () {
+    it("should support the changeEtherBalance matcher with fee enabled", async function () {
       const [sender] = await ethers.getSigners();
       const Contract = await ethers.getContractFactory("Contract");
       const contract = await Contract.deploy({

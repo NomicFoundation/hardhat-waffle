@@ -3,6 +3,7 @@ import { normalizeHardhatNetworkAccountsConfig } from "hardhat/internal/core/pro
 import { HARDHAT_NETWORK_NAME } from "hardhat/plugins";
 import { HardhatNetworkConfig } from "hardhat/types";
 import path from "path";
+import { copyFile } from 'fs/promises';
 
 import { useEnvironment } from "./helpers";
 
@@ -96,12 +97,25 @@ describe("Waffle plugin plugin", function () {
   describe("Test environment initialization", function () {
     useEnvironment("hardhat-project", "hardhat");
 
-    it("Should load the Waffle chai matchers", async function () {
-      await this.env.run("test");
-      // Mocha's exit code is the number of failed tests (up to 255).
-      // We expect one failed test ("Should fail", throwing on purpose).
-      assert.equal(process.exitCode, 1);
-      process.exitCode = 0;
-    });
+    const configs= [
+      'default',
+      'inject-history',
+      'skip-gas',
+      'skip-gas-inject-history'
+    ];
+
+    for (const config of configs) {
+      it(`Should load the Waffle chai matchers with ${config} config`, async function () {
+        await copyFile(
+          `./test/fixture-projects/config/${config}/hardhat.config.js`,
+          './test/fixture-projects/hardhat-project/hardhat.config.js'
+        );
+        await this.env.run("test");
+        // Mocha's exit code is the number of failed tests (up to 255).
+        // We expect one failed test ("Should fail", throwing on purpose).
+        assert.equal(process.exitCode, 1);
+        process.exitCode = 0;
+      });
+    }
   });
 });

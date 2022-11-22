@@ -43,7 +43,7 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
       await tx.wait();
 
       try {
-        expect("inc").to.be.calledOnContractWith(contract);
+        expect("inc").to.be.calledOnContract(contract);
       } catch (error) {
         if (error.message.includes("calledOnContract matcher")) {
           return;
@@ -169,8 +169,11 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
     });
   });
 
-  describe("Specific behaviour", () => {
-    it("should skip gas cost check", async () => {
+  describe("Config options", () => {
+    it("should skip gas cost check", async function () {
+      if (process.env.TEST_SKIP_GAS) {
+        this.only();
+      }
       let estimateGasCalled = false;
       const originalProcess =
         waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule.processRequest.bind(
@@ -198,6 +201,38 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
       await tx.wait();
 
       expect(estimateGasCalled, "Estimate gas was called").to.be.false;
+    });
+
+    it("should support calledOnContractWith", async function () {
+      if (process.env.TEST_INJECT_HISTORY) {
+        this.only();
+      }
+
+      const Contract = await ethers.getContractFactory("Contract");
+      const contract = await Contract.deploy();
+
+      await contract.deployed();
+
+      const tx = await contract.inc(7);
+      await tx.wait();
+
+      expect("inc").to.be.calledOnContractWith(contract, [7]);
+    });
+
+    it("should support calledOnContract", async function () {
+      if (process.env.TEST_INJECT_HISTORY) {
+        this.only();
+      }
+
+      const Contract = await ethers.getContractFactory("Contract");
+      const contract = await Contract.deploy();
+
+      await contract.deployed();
+
+      const tx = await contract.inc(7);
+      await tx.wait();
+
+      expect("inc").to.be.calledOnContract(contract);
     });
   });
 });

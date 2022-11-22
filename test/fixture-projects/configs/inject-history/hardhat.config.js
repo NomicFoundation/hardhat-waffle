@@ -1,6 +1,4 @@
-require("../../../src/index");
-
-process.env['TEST_INJECT_HISTORY'] = true;
+require("../../../../src/index");
 
 module.exports = {
   solidity: "0.7.3",

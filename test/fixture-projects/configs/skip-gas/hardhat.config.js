@@ -1,6 +1,4 @@
-require("../../../src/index");
-
-process.env['TEST_SKIP_GAS'] = true;
+require("../../../../src/index");
 
 module.exports = {
   solidity: "0.7.3",

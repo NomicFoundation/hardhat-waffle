@@ -3,7 +3,7 @@ import { normalizeHardhatNetworkAccountsConfig } from "hardhat/internal/core/pro
 import { HARDHAT_NETWORK_NAME } from "hardhat/plugins";
 import { HardhatNetworkConfig } from "hardhat/types";
 import path from "path";
-import { copyFile } from 'fs/promises';
+import { copy } from 'fs-extra';
 
 import { useEnvironment } from "./helpers";
 
@@ -97,25 +97,35 @@ describe("Waffle plugin plugin", function () {
   describe("Test environment initialization", function () {
     useEnvironment("hardhat-project", "hardhat");
 
-    const configs= [
-      'default',
-      'inject-history',
-      'skip-gas',
-      'skip-gas-inject-history'
-    ];
+    it("Should load the Waffle chai matchers", async function () {
+      await this.env.run("test");
+      // Mocha's exit code is the number of failed tests (up to 255).
+      // We expect one failed test ("Should fail", throwing on purpose).
+      assert.equal(process.exitCode, 1);
+      process.exitCode = 0;
+    });
+  });
 
-    for (const config of configs) {
-      it(`Should load the Waffle chai matchers with ${config} config`, async function () {
-        await copyFile(
-          `./test/fixture-projects/config/${config}/hardhat.config.js`,
-          './test/fixture-projects/hardhat-project/hardhat.config.js'
-        );
+  const configs= [
+    'default',
+    'inject-history',
+    'skip-gas',
+    'skip-gas-inject-history'
+  ];
+  const projectDir = process.cwd();
+
+  for (const config of configs) {
+    describe(`Test environment initialization with ${config} config`, async function () {
+      useEnvironment(`configs/${config}`, "hardhat");
+
+      it("Should adjust to the config", async function () {
+        await copy(`${projectDir}/test/fixture-projects/hardhat-project/contracts`, './contracts', { recursive: true, overwrite: true });
         await this.env.run("test");
         // Mocha's exit code is the number of failed tests (up to 255).
         // We expect one failed test ("Should fail", throwing on purpose).
-        assert.equal(process.exitCode, 1);
+        assert.equal(process.exitCode, 0);
         process.exitCode = 0;
       });
-    }
-  });
+    });
+  }
 });

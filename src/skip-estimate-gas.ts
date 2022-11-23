@@ -1,6 +1,17 @@
+import { BigNumber } from 'ethers';
+
 let processRequest: any;
 
-export function skipEstimateGas(hardhatWaffleProvider: any) {
+export function skipEstimateGas(hardhatWaffleProvider: any, estimateResult: string) {
+  let estimateGasResult: BigNumber;
+  try {
+    estimateGasResult = BigNumber.from(estimateResult);
+  } catch {
+    throw new Error(
+      `The value of the skipEstimateGas (${estimateResult}) in \n` +
+      'hardhat config property must be a valid BigNumber string'
+    );
+  }
   const init =
     hardhatWaffleProvider._hardhatNetwork.provider._wrapped._wrapped._wrapped
       ._init;
@@ -12,12 +23,12 @@ export function skipEstimateGas(hardhatWaffleProvider: any) {
           "beforeMessage"
         ) < 2
       ) {
-        overrideProcessRequest(hardhatWaffleProvider);
+        overrideProcessRequest(hardhatWaffleProvider, estimateGasResult);
       }
     };
 }
 
-function overrideProcessRequest(provider: any) {
+function overrideProcessRequest(provider: any, estimateGasResult: BigNumber) {
   const curProcessRequest =
     provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule
       .processRequest;
@@ -30,7 +41,7 @@ function overrideProcessRequest(provider: any) {
     provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule.processRequest =
       (method: string, params: any[]) => {
         if (method === "eth_estimateGas") {
-          return "0xB71B00";
+          return estimateGasResult.toHexString();
         } else {
           return originalProcess(method, params);
         }

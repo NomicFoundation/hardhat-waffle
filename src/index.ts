@@ -22,18 +22,20 @@ declare module "hardhat/types" {
        */
       injectCallHistory?: boolean;
       /**
-       * If true, the estimate gas step will be skipped when executing a transaction.
+       * Allows to skip estimateGas step and return specific hex value when executing a transaction.
+       * Can be useful for speeding up tests and getting better error messages.
        *
-       * @default false
+       * @example "0xB71B00"
+       * @default undefined
        */
-      skipEstimateGas?: boolean;
+      skipEstimateGas?: string;
     };
   }
 
   export interface HardhatConfig {
     waffle?: {
       injectCallHistory?: boolean;
-      skipEstimateGas?: boolean;
+      skipEstimateGas?: string;
     };
   }
 }
@@ -62,8 +64,8 @@ extendEnvironment((hre) => {
       return createFixtureLoader(overrideSigners, overrideProvider ?? provider);
     };
 
-    if (hre.config.waffle?.skipEstimateGas === true) {
-      skipEstimateGas(hardhatWaffleProvider);
+    if (hre.config.waffle?.skipEstimateGas) {
+      skipEstimateGas(hardhatWaffleProvider, hre.config.waffle?.skipEstimateGas);
     }
 
     if (hre.config.waffle?.injectCallHistory === true) {

@@ -4,6 +4,8 @@ contract Contract {
   uint public value;
   event Increment(uint x);
 
+  function doNothing() public {}
+
   function inc(uint x) public {
     require(x > 0, "Increment cannot be zero");
     value += x;

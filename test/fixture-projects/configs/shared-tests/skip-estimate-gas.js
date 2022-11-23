@@ -1,38 +1,35 @@
 const { expect } = require("chai");
+const { config } = require("hardhat");
 
 const checkGasCostEstimation = ({ enabled }) => {
   describe('Gas cost estimation', () => {
     it(`should ${enabled ? '' : `not `}skip gas cost estimation`, async function () {
-      let estimateGasCalled = false;
-      const originalProcess =
-        waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule.processRequest.bind(
-          waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped
-            ._ethModule
-        );
-      waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._ethModule.processRequest =
-        (method, params) => {
-          if (method === "eth_estimateGas") {
-            estimateGasCalled = true;
-          }
-          return originalProcess(method, params);
-        };
-  
-      processRequest =
-        waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped
-          ._ethModule.processRequest;
-  
       const Contract = await ethers.getContractFactory("Contract");
       const contract = await Contract.deploy();
   
       await contract.deployed();
-  
-      const tx = await contract.inc(7);
-      await tx.wait();
+
+      const calldata1 = contract.interface.encodeFunctionData('inc', [7]);
+      const calldata2 = contract.interface.encodeFunctionData('doNothing', []);
+      const gas1 = await waffle.provider.estimateGas({
+        to: contract.address,
+        data: calldata1
+      });
+      const gas2 = await waffle.provider.estimateGas({
+        to: contract.address,
+        data: calldata2
+      });
   
       if (enabled) {
-        expect(estimateGasCalled, "Estimate gas was called but shouldn't have been").to.be.false;
+        expect(
+          gas1.toHexString() === gas2.toHexString() && gas1.toHexString() === config.waffle?.skipEstimateGas,
+          "Estimate gas was called but shouldn't have been"
+        ).to.be.true;
       } else {
-        expect(estimateGasCalled, "Estimate gas was not called but should have been").to.be.true;
+        expect(
+          gas1.toHexString() === gas2.toHexString(),
+          "Estimate gas was not called but should have been"
+        ).to.be.false;
       }
     });
   });

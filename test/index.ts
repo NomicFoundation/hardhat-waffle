@@ -3,7 +3,7 @@ import { normalizeHardhatNetworkAccountsConfig } from "hardhat/internal/core/pro
 import { HARDHAT_NETWORK_NAME } from "hardhat/plugins";
 import { HardhatNetworkConfig } from "hardhat/types";
 import path from "path";
-import { copy } from 'fs-extra';
+import { copy } from "fs-extra";
 
 import { useEnvironment } from "./helpers";
 
@@ -106,11 +106,11 @@ describe("Waffle plugin plugin", function () {
     });
   });
 
-  const configs= [
-    'default',
-    'inject-history',
-    'skip-gas',
-    'skip-gas-inject-history'
+  const configs = [
+    "default",
+    "inject-history",
+    "skip-gas",
+    "skip-gas-inject-history",
   ];
   const projectDir = process.cwd();
 
@@ -121,7 +121,7 @@ describe("Waffle plugin plugin", function () {
       it("Should adjust to the config", async function () {
         await copy(
           `${projectDir}/test/fixture-projects/hardhat-project/contracts`,
-          './contracts',
+          "./contracts",
           { recursive: true, overwrite: true }
         );
         await this.env.run("test");

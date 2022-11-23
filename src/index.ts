@@ -64,8 +64,11 @@ extendEnvironment((hre) => {
       return createFixtureLoader(overrideSigners, overrideProvider ?? provider);
     };
 
-    if (hre.config.waffle?.skipEstimateGas) {
-      skipEstimateGas(hardhatWaffleProvider, hre.config.waffle?.skipEstimateGas);
+    if (hre.config.waffle?.skipEstimateGas !== undefined) {
+      skipEstimateGas(
+        hardhatWaffleProvider,
+        hre.config.waffle?.skipEstimateGas
+      );
     }
 
     if (hre.config.waffle?.injectCallHistory === true) {

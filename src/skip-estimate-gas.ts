@@ -1,15 +1,18 @@
-import { BigNumber } from 'ethers';
+import { BigNumber } from "ethers";
 
 let processRequest: any;
 
-export function skipEstimateGas(hardhatWaffleProvider: any, estimateResult: string) {
+export function skipEstimateGas(
+  hardhatWaffleProvider: any,
+  estimateResult: string
+) {
   let estimateGasResult: BigNumber;
   try {
     estimateGasResult = BigNumber.from(estimateResult);
   } catch {
     throw new Error(
       `The value of the skipEstimateGas (${estimateResult}) in \n` +
-      'hardhat config property must be a valid BigNumber string'
+        "hardhat config property must be a valid BigNumber string"
     );
   }
   const init =

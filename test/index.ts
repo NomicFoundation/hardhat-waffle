@@ -115,7 +115,7 @@ describe("Waffle plugin plugin", function () {
   const projectDir = process.cwd();
 
   for (const config of configs) {
-    describe.only(`Test environment initialization with ${config} config`, async function () {
+    describe(`Test environment initialization with ${config} config`, async function () {
       useEnvironment(`configs/${config}`, "hardhat");
 
       it("Should adjust to the config", async function () {

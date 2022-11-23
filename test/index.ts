@@ -107,10 +107,10 @@ describe("Waffle plugin plugin", function () {
   });
 
   const configs= [
-    // 'default',
-    // 'inject-history',
+    'default',
+    'inject-history',
     'skip-gas',
-    // 'skip-gas-inject-history'
+    'skip-gas-inject-history'
   ];
   const projectDir = process.cwd();
 

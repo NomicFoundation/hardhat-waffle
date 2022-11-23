@@ -1,5 +1,4 @@
 const { expect } = require("chai");
-const { config } = require("hardhat");
 
 const checkGasCostEstimation = ({ enabled }) => {
   describe('Gas cost estimation', () => {
@@ -22,7 +21,7 @@ const checkGasCostEstimation = ({ enabled }) => {
   
       if (enabled) {
         expect(
-          gas1.toHexString() === gas2.toHexString() && gas1.toHexString() === config.waffle?.skipEstimateGas,
+          gas1.toHexString() === gas2.toHexString() && gas1.toHexString() === '0xB71B00',
           "Estimate gas was called but shouldn't have been"
         ).to.be.true;
       } else {

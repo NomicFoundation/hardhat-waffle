@@ -24,7 +24,7 @@ const checkGasCostEstimation = ({ enabled }) => {
       if (enabled) {
         expect(
           gas1.toHexString() === gas2.toHexString() &&
-            gas1.toHexString() === "0xB71B00",
+            gas1.toHexString() === "0xB71B00", // This value is set in `config.waffle.skipEstimategas`.
           "Estimate gas was called but shouldn't have been"
         ).to.be.true;
       } else {

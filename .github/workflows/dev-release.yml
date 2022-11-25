@@ -43,18 +43,12 @@ jobs:
       - run: yarn --frozen-lockfile
       - run: yarn build
 
-      - name: Set git user
-        run: |
-          git config user.name truefibot
-          git config user.email truebot.github@trusttoken.com
-
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
         with:
-          version: yarn version
+          version: yarn changeset version
           commit: "⬆️ Bump version"
           title: "⬆️ Bump version"
-          setupGitUser: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

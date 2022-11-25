@@ -68,7 +68,7 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
       await contract.deployed();
 
       await expect(() =>
-        contract.incByValue({ value: 200, gasPrice: 1265506330 })
+        contract.incByValue({ value: 200, gasPrice: 1265506330 }) // Constant gasPrice in order to make tests predictable.
       ).to.changeEtherBalance(sender, -56221384216780, { includeFee: true });
     });
 

@@ -4,7 +4,8 @@ on:
     branches:
       - main
 jobs:
-  dev-release:
+  release:
+    name: Publish dev version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,7 +15,33 @@ jobs:
           node-version: '16.x'
       - run: npm i -g yarn@1.22.17
       - run: yarn --frozen-lockfile
-      - run: yarn build
       - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN_DEV }}" > .npmrc
       - run: ./scripts/dev-version.sh
       - run: yarn publish
+
+  changeset-pr:
+    name: Create PR for changeset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3.0.0
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - run: npm i -g yarn@1.22.17
+      - run: yarn --frozen-lockfile
+
+      - name: Create Release Pull Request
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: yarn changeset version
+          commit: "⬆️ Bump version"
+          title: "⬆️ Bump version"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

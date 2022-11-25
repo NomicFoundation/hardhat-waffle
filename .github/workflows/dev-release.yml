@@ -39,7 +39,6 @@ jobs:
           node-version: '16.x'
       - run: npm i -g yarn@1.22.17
       - run: yarn --frozen-lockfile
-      - run: yarn build
 
       - name: Create Release Pull Request
         id: changesets

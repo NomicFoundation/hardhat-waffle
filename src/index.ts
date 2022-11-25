@@ -1,6 +1,4 @@
 import "@nomiclabs/hardhat-ethers";
-import type { MockProvider } from "ethereum-waffle";
-import type { providers, Signer } from "ethers";
 import { extendEnvironment } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";
 

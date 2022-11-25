@@ -1,5 +1,11 @@
 # @nomiclabs/hardhat-waffle
 
+## 2.0.4
+
+### Patch Changes
+
+- 8a8537e: Move logic from hardhat-patches
+
 ## 2.0.3
 
 ### Patch Changes

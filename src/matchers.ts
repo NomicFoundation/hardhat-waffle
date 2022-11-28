@@ -7,7 +7,8 @@ export function initializeWaffleMatchers(projectRoot: string) {
     });
 
     const chai = require(chaiPath);
-    const { waffleChai } = require("./waffle-chai");
+    // eslint-disable-next-line import/no-extraneous-dependencies
+    const { waffleChai } = require("@ethereum-waffle/chai");
 
     chai.use(waffleChai);
   } catch {

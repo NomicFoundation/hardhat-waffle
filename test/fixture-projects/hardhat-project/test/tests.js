@@ -12,32 +12,6 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
     throw new Error("Failed on purpose");
   });
 
-  describe("Unsupported methods", function () {
-    it("Should print the right error for calledOnContractWith", function () {
-      try {
-        expect("balanceOf").to.be.calledOnContractWith("asd", ["asd"]);
-      } catch (error) {
-        if (error.message.includes("is not supported by Hardhat")) {
-          return;
-        }
-      }
-
-      throw Error("Should have failed");
-    });
-
-    it("Should print the right error for calledOnContract", function () {
-      try {
-        expect("balanceOf").to.be.calledOnContract("asd");
-      } catch (error) {
-        if (error.message.includes("is not supported by Hardhat")) {
-          return;
-        }
-      }
-
-      throw Error("Should have failed");
-    });
-  });
-
   describe("waffle chai matchers", function () {
     it("should support bignumber matchers", async function () {
       expect(ethers.BigNumber.from(993)).to.equal(993);
@@ -93,9 +67,9 @@ describe("Internal test suite of hardhat-waffle's test project", function () {
 
       await contract.deployed();
 
-      await expect(() =>
-        contract.incByValue({ value: 200 })
-      ).to.changeEtherBalance(sender, -56189212266592, { includeFee: true });
+      await expect(
+        () => contract.incByValue({ value: 200, gasPrice: 1265506330 }) // Constant gasPrice in order to make tests predictable.
+      ).to.changeEtherBalance(sender, -56221384216780, { includeFee: true });
     });
 
     it("should support the changeEtherBalance matcher with multiple accounts", async function () {

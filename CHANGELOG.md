@@ -1,5 +1,11 @@
 # @nomiclabs/hardhat-waffle
 
+## 2.0.4
+
+### Patch Changes
+
+- c5b5c29: Introduce skipEstimateGas and injectCallHistory fields to hardhat config
+
 ## 2.0.3
 
 ### Patch Changes

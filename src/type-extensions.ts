@@ -11,7 +11,7 @@ import type { Contract, providers, Signer } from "ethers";
 
 import "hardhat/types/runtime";
 
-interface HardhatWaffle {
+export interface HardhatWaffle {
   provider: MockProvider;
   deployContract: (
     signer: Signer,

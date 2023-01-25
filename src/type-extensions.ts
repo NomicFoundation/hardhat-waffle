@@ -28,6 +28,6 @@ export interface HardhatWaffle {
 
 declare module "hardhat/types/runtime" {
   interface HardhatRuntimeEnvironment {
-    waffle: HardhatWaffle
+    waffle: HardhatWaffle;
   }
 }

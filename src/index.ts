@@ -10,6 +10,7 @@ import { initializeWaffleMatchers } from "./matchers";
 import "./type-extensions";
 import { skipEstimateGas } from "./skip-estimate-gas";
 import { injectCallHistory } from "./inject-call-history";
+import { hardhatChaiMatchersIncompatibilityCheck } from "./hardhatChaiMatchersIncompatibilityCheck";
 
 declare module "hardhat/types" {
   export interface HardhatUserConfig {
@@ -39,6 +40,8 @@ declare module "hardhat/types" {
     };
   }
 }
+
+hardhatChaiMatchersIncompatibilityCheck();
 
 extendEnvironment((hre) => {
   // We can't actually implement a MockProvider because of its private

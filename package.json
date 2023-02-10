@@ -1,6 +1,6 @@
 {
   "name": "@nomiclabs/hardhat-waffle",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Hardhat plugin to test smart contracts with Waffle",
   "homepage": "https://github.com/NomicFoundation/hardhat-waffle",
   "repository": "github:NomicFoundation/hardhat-waffle",
@@ -63,5 +63,8 @@
     "ethereum-waffle": "*",
     "ethers": "^5.0.0",
     "hardhat": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

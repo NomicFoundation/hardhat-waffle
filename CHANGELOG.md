@@ -1,5 +1,12 @@
 # @nomiclabs/hardhat-waffle
 
+## 2.0.5
+
+### Patch Changes
+
+- 36441d8: Add hardhat chai matchers incompatibility check
+- c5b5c29: Introduce skipEstimateGas and injectCallHistory fields to hardhat config
+
 ## 2.0.3
 
 ### Patch Changes

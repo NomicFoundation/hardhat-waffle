@@ -60,6 +60,7 @@
   },
   "peerDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.0",
+    "@types/sinon-chai": "^3.2.3",
     "ethereum-waffle": "*",
     "ethers": "^5.0.0",
     "hardhat": "^2.0.0"

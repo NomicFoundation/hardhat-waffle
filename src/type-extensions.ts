@@ -6,7 +6,7 @@ import type {
   MockProvider,
   solidity,
 } from "ethereum-waffle";
-import type { ContractJSON } from "ethereum-waffle/dist/esm/ContractJSON";
+import type { ContractJSON } from "ethereum-waffle/dist/esm/src/ContractJSON";
 import type { Contract, providers, Signer } from "ethers";
 
 import "hardhat/types/runtime";

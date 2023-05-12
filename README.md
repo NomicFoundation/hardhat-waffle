@@ -13,7 +13,7 @@ This plugin adds a Hardhat-ready version of Waffle to the Hardhat Runtime Enviro
 ## Installation
 
 ```bash
-npm install --save-dev @nomiclabs/hardhat-waffle 'ethereum-waffle@^3.0.0' @nomiclabs/hardhat-ethers 'ethers@^5.0.0'
+npm install --save-dev @nomiclabs/hardhat-waffle 'ethereum-waffle@^3.0.0' @nomiclabs/hardhat-ethers 'ethers@^5.0.0' @types/sinon-chai@^3.2.3
 ```
 
 And add the following statement to your `hardhat.config.js`:

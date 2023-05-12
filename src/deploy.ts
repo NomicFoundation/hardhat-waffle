@@ -21,7 +21,9 @@ export async function hardhatDeployContract(
   args: any[] = [],
   overrideOptions: providers.TransactionRequest = {}
 ): Promise<Contract> {
-  const { deployContract } = require("ethereum-waffle/dist/cjs/deployContract");
+  const {
+    deployContract,
+  } = require("ethereum-waffle/dist/cjs/src/deployContract");
 
   if (
     overrideOptions.gasLimit === undefined &&

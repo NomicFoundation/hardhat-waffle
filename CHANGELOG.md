@@ -1,5 +1,11 @@
 # @nomiclabs/hardhat-waffle
 
+## 2.0.6
+
+### Patch Changes
+
+- 7926cc9: Support Waffle ^4.0.8
+
 ## 2.0.5
 
 ### Patch Changes
